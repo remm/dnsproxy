@@ -97,7 +97,6 @@ func isCacheable(m *dns.Msg) bool {
 	qType := m.Question[0].Qtype
 
 	ttl := findLowestTTL(m)
-	// no value of type uint32 is less than 0
 	if ttl == 0 {
 		return false
 	}
