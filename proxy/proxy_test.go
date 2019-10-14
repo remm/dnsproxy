@@ -665,7 +665,7 @@ func sendTestMessagesAsync(t *testing.T, conn *dns.Conn) {
 	g.Add(testMessagesCount)
 
 	for i := 0; i < testMessagesCount; i++ {
-		go sendTestMessageAsync(t, conn, g)
+		go sendTestMessageAsync(t, conn, g) // nolint:staticcheck
 	}
 
 	g.Wait()

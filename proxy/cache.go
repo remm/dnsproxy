@@ -97,7 +97,8 @@ func isCacheable(m *dns.Msg) bool {
 	qType := m.Question[0].Qtype
 
 	ttl := findLowestTTL(m)
-	if ttl <= 0 {
+	// no value of type uint32 is less than 0
+	if ttl == 0 {
 		return false
 	}
 
@@ -211,7 +212,10 @@ func unpackResponse(data []byte, request *dns.Msg) *dns.Msg {
 	ttl := expire - uint32(now)
 
 	m := dns.Msg{}
-	m.Unpack(data[4:])
+	e := m.Unpack(data[4:])
+	if e != nil {
+		log.Debug("error while message unpack: %s", e)
+	}
 
 	res := dns.Msg{}
 	res.SetReply(request)

@@ -144,7 +144,7 @@ func TestCacheRace(t *testing.T) {
 	g := &sync.WaitGroup{}
 	g.Add(len(hosts))
 	for k, v := range hosts {
-		go setAndGetCache(t, testCache, g, k, v)
+		go setAndGetCache(t, testCache, g, k, v) // nolint:staticcheck
 	}
 
 	g.Wait()

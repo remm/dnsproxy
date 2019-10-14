@@ -103,7 +103,7 @@ func sendTestAAAAMessagesAsync(t *testing.T, conn *dns.Conn) {
 	g.Add(testMessagesCount)
 
 	for i := 0; i < testMessagesCount; i++ {
-		go sendTestAAAAMessageAsync(t, conn, g, ipv4OnlyHost)
+		go sendTestAAAAMessageAsync(t, conn, g, ipv4OnlyHost) // nolint:staticcheck
 	}
 
 	g.Wait()
