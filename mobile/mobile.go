@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"os"
 	"runtime/debug"
 	"strings"
 	"sync"
@@ -29,8 +30,7 @@ func init() {
 	upstream.RootCAs = loadSystemRootCAs()
 	upstream.DohMaxConnsPerHost = 2
 
-	// TODO after GO 1.13 release TLS 1.3 will be enabled by default. Remove this afterward
-	//os.Setenv("GODEBUG", os.Getenv("GODEBUG")+",tls13=1")
+	enableTLS13()
 }
 
 // DNSProxy represents a proxy with it's configuration
@@ -328,4 +328,12 @@ func createConfig(config *Config) (*proxy.Config, error) {
 	}
 
 	return &proxyConfig, nil
+}
+
+// TODO after GO 1.13 release TLS 1.3 will be enabled by default. Remove this afterward
+func enableTLS13() {
+	err := os.Setenv("GODEBUG", os.Getenv("GODEBUG")+",tls13=1")
+	if err != nil {
+		log.Fatalf("Failed to enable TLS 1.3: %s", err)
+	}
 }
